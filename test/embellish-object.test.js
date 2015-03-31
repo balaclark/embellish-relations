@@ -65,7 +65,20 @@ describe('#embellishObjectRelations()', function () {
 
   describe('nested relations', function () {
 
-    it('should support nested objects')
+    it('should support nested objects', function (done) {
+      var embellishRelations = embellishObjectRelations(
+          [ { attribute: '$nestedObject.relationId', service: mockService }
+          ])
+        , expected = fixtures(6)
+
+      expected.nestedObject._relation = fixtures(1)
+
+      embellishRelations(fixtures(6), function (err, embellished) {
+        if (err) return done(err)
+        assert.deepEqual(embellished, expected)
+        done()
+      })
+    })
 
     it('should support nested arrays', function (done) {
       var embellishRelations = embellishObjectRelations(
